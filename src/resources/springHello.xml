@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+       default-init-method="init"
+       default-destroy-method="finish">
+
+    <bean id="performanceAuditory" class="start.home.PerformanceAuditory">
+        <property name="hellomessage" value="Lets start performance with actions"/>
+    </bean>
+
+    <bean id="actioner1"
+            class="start.home.Actioner">
+        <property name="perfAction" value="tanzen!!!"/>
+        <property name="action">
+            <bean class="start.home.ActionFirst"/>
+        </property>
+    </bean>
+
+    <bean id="actioner2"
+            class="start.home.Actioner"
+        p:perfAction="jumping and dance!"
+        p:action-ref="secondActionRealization"/>
+
+    <bean id="actioner3"
+          class="start.home.Actioner">
+        <property name="perfAction" value="#{actioner1.perfAction}"/>
+        <property name="action">
+            <bean class="start.home.ActionSecond"/>
+        </property>
+    </bean>
+
+    <bean id="actioner4"
+          class="start.home.Actioner">
+        <property name="perfAction" value="#{T(start.home.PerformSelector).performanceSelect()?.toUpperCase()}"/>
+        <property name="action">
+            <bean class="start.home.ActionSecond"/>
+        </property>
+    </bean>
+
+    <bean id="multyAct1" class="start.home.MultyActioner">
+        <property name="actions">
+            <list>
+                <ref bean="firstActionRealization"/>
+                <ref bean="secondActionRealization"/>
+                <ref bean="firstActionRealization"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="multyAct2" class="start.home.MultyActioner"
+          p:actions-ref="list"/>
+
+    <util:list id="list">
+        <ref bean="firstActionRealization"/>
+        <ref bean="secondActionRealization"/>
+        <ref bean="firstActionRealization"/>
+        <ref bean="secondActionRealization"/>
+    </util:list>
+
+   <!-- <bean id="perfSelector" class="start.home.PerformSelector"/>-->
+    <bean id="firstActionRealization" class="start.home.ActionFirst"/>
+    <bean id="secondActionRealization" class="start.home.ActionSecond"/>
+
+</beans>
